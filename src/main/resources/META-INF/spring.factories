@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.ader1y.i18n.expend.I18nExpendAutoConfig,\
-  com.ader1y.i18n.expend.I18nCenterClient
+  com.ader1y.i18n.expend.I18nCenterClient,\
+  com.ader1y.i18n.expend.I18nRefreshListener

@@ -1,10 +1,12 @@
 package com.ader1y.i18n.expend;
 
 import com.ader1y.i18n.expend.support.I18nExpendConfigurationProperties;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 
 /**
  * @author zhan yan
@@ -12,7 +14,7 @@ import org.springframework.context.annotation.Bean;
  **/
 @ConditionalOnProperty(name = "i18n.expend.enable")
 @EnableConfigurationProperties(I18nExpendConfigurationProperties.class)
-public class I18nExpendAutoConfig {
+public class I18nExpendAutoConfig implements CommandLineRunner {
 
     private final I18nExpendConfigurationProperties properties;
 
@@ -40,12 +42,15 @@ public class I18nExpendAutoConfig {
         return i18nCache;
     }
 
-    @Bean
-    @ConditionalOnProperty(name = "i18n.expend.enable")
-    @ConditionalOnMissingBean
-    public I18nRefreshListener i18nRefreshListener(){
-
-        return new I18nRefreshListener(i18nCache, i18nCenterClient, properties);
+    @Override
+    public void run(String... args) {
+        refreshCache();
     }
 
+    /**
+     * 刷新I18n的本地缓存资源
+     */
+    private void refreshCache(){
+        i18nCache.refresh(i18nCenterClient.pullAll(properties.getI18nKey()));
+    }
 }

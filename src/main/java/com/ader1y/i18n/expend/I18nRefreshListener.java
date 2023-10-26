@@ -2,17 +2,15 @@ package com.ader1y.i18n.expend;
 
 import com.ader1y.i18n.expend.support.I18nExpendConfigurationProperties;
 import com.ader1y.i18n.expend.support.KafkaConst;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 /**
  * @author zhan yan
- * @date 2023/10/24
  **/
 @Component
-public class I18nRefreshListener implements CommandLineRunner {
+public class I18nRefreshListener {
 
     private final AbstractI18nCache i18nCache;
 
@@ -42,10 +40,6 @@ public class I18nRefreshListener implements CommandLineRunner {
             refreshCache();
     }
 
-    @Override
-    public void run(String... args) {
-        refreshCache();
-    }
 
     /**
      * 刷新I18n的本地缓存资源

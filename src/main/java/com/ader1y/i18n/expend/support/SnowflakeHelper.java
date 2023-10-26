@@ -1,4 +1,4 @@
-package com.insigma.inchat.util;
+package com.ader1y.i18n.expend.support;
 
 import com.github.yitter.contract.IIdGenerator;
 import com.github.yitter.contract.IdGeneratorException;
@@ -21,7 +21,7 @@ public class SnowflakeHelper {
 
     //  初始化配置信息
     static {
-        short initWorkerId = 1;
+        short initWorkerId = (short) (Math.random() * 1000);
         IdGeneratorOptions options = new IdGeneratorOptions(initWorkerId);
         idGenInstance = new DefaultIdGenerator(options);
     }

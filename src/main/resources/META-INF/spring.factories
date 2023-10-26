@@ -1,6 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-        com.octopus.util.support.spring.GlobalExceptionCatch,\
-        com.octopus.util.aspect.LogAspect,\
-        com.octopus.util.aspect.MpSelectOneAspect,\
-        com.octopus.util.InitializationProvider,\
-        com.octopus.util.support.spring.BeanUtils
+  com.ader1y.i18n.expend.I18nExpendAutoConfig,\
+  com.ader1y.i18n.expend.I18nCenterClient

@@ -14,28 +14,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class I18nRefreshListener implements CommandLineRunner {
 
-    private final I18nCacheManager i18nCacheManager;
+    private final AbstractI18nCache i18nCache;
 
     private final I18nCenterClient i18nCenterClient;
 
     private final I18nExpendConfigurationProperties properties;
 
 
-    public I18nRefreshListener(I18nCacheManager i18nCacheManager, I18nCenterClient i18nCenterClient, I18nExpendConfigurationProperties properties) {
-        this.i18nCacheManager = i18nCacheManager;
+    public I18nRefreshListener(AbstractI18nCache i18nCache, I18nCenterClient i18nCenterClient, I18nExpendConfigurationProperties properties) {
+        this.i18nCache = i18nCache;
         this.i18nCenterClient = i18nCenterClient;
         this.properties = properties;
     }
 
-    @ConditionalOnProperty(name = "i18n.expend.strongConsistency")
     @KafkaListener(topics = {KafkaConst.REFRESH_TOPIC})
     public void listenRefreshEvent(){
         refreshCache();
     }
 
+    /**
+     * 监听资源修改消息,
+     */
+    @ConditionalOnProperty(name = "i18n.expend.strong-consistency.enable")
     @KafkaListener(topics = {KafkaConst.CHANGE_TOPIC})
-    public void listenChangeEvent(){
-        refreshCache();
+    public void listenChangeEvent(String i18nKey){
+        if (properties.getI18nKey().equals(i18nKey))
+            refreshCache();
     }
 
     @Override
@@ -47,7 +51,7 @@ public class I18nRefreshListener implements CommandLineRunner {
      * 刷新I18n的本地缓存资源
      */
     private void refreshCache(){
-        i18nCacheManager.refresh(i18nCenterClient.pullAll(properties.getI18nKey()));
+        i18nCache.refresh(i18nCenterClient.pullAll(properties.getI18nKey()));
     }
 
 }
